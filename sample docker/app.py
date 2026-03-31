@@ -6,7 +6,7 @@ app = FastAPI()
 def read_root():
     a=8
     b=6
-    return a-b
+    return {"result": a*b, "message": "Auto-deployed!"}
 
 @app.get("/health")
 def health_check():
