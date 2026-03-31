@@ -1,45 +1,45 @@
 steps:
-  # Build the Docker image
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'build'
-      - '-t'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/fastapi-repo/fastapi-app:$COMMIT_SHA'
-      - '-t'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/fastapi-repo/fastapi-app:latest'
-      - '.'
+# Build the Docker image
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+    - 'build'
+    - '-t'
+    - 'europe-west1-docker.pkg.dev/$PROJECT_ID/fastapi-repo/fastapi-app:$COMMIT_SHA'
+    - '-t'
+    - 'europe-west1-docker.pkg.dev/$PROJECT_ID/fastapi-repo/fastapi-app:latest'
+    - '.'
 
-  # Push to Artifact Registry (with commit SHA)
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'push'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/fastapi-repo/fastapi-app:$COMMIT_SHA'
+# Push to Artifact Registry (with commit SHA)
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+    - 'push'
+    - 'europe-west1-docker.pkg.dev/$PROJECT_ID/fastapi-repo/fastapi-app:$COMMIT_SHA'
 
-  # Push to Artifact Registry (latest tag)
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'push'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/fastapi-repo/fastapi-app:latest'
+# Push to Artifact Registry (latest tag)
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+    - 'push'
+    - 'europe-west1-docker.pkg.dev/$PROJECT_ID/fastapi-repo/fastapi-app:latest'
 
-  # Deploy to Cloud Run
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: gcloud
-    args:
-      - 'run'
-      - 'deploy'
-      - 'fastapi-service'
-      - '--image=us-central1-docker.pkg.dev/$PROJECT_ID/fastapi-repo/fastapi-app:$COMMIT_SHA'
-      - '--region=us-central1'
-      - '--platform=managed'
-      - '--allow-unauthenticated'
-      - '--port=8080'
-      - '--memory=512Mi'
-      - '--cpu=1'
-      - '--max-instances=10'
+# Deploy to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args:
+    - 'run'
+    - 'deploy'
+    - 'fastapi-service'
+    - '--image=europe-west1-docker.pkg.dev/$PROJECT_ID/fastapi-repo/fastapi-app:$COMMIT_SHA'
+    - '--region=europe-west1'
+    - '--platform=managed'
+    - '--allow-unauthenticated'
+    - '--port=8080'
+    - '--memory=512Mi'
+    - '--cpu=1'
+    - '--max-instances=10'
 
 images:
-  - 'us-central1-docker.pkg.dev/$PROJECT_ID/fastapi-repo/fastapi-app:$COMMIT_SHA'
-  - 'us-central1-docker.pkg.dev/$PROJECT_ID/fastapi-repo/fastapi-app:latest'
+  - 'europe-west1-docker.pkg.dev/$PROJECT_ID/fastapi-repo/fastapi-app:$COMMIT_SHA'
+  - 'europe-west1-docker.pkg.dev/$PROJECT_ID/fastapi-repo/fastapi-app:latest'
 
 options:
   logging: CLOUD_LOGGING_ONLY
